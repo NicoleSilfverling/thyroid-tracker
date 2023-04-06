@@ -31,9 +31,9 @@ const NavigationBar = ({ navigation }) => {
       {/* Details */}
       <TouchableOpacity
         style={styles.navbarItem}
-        onPress={() => navigation.navigate("Details")}
+        onPress={() => navigation.navigate("Calendar")}
       >
-        <Text style={styles.navbarItemText}>Details</Text>
+        <Text style={styles.navbarItemText}>Calendar</Text>
       </TouchableOpacity>
 
       {/* Graph */}
