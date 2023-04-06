@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
-import Navbar from "../components/Navbar";
 import NavigationBar from "../components/NavigationBar";
 
 export default function HomeScreen({ navigation }) {
