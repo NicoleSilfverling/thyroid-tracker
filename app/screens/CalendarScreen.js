@@ -26,9 +26,7 @@ export default function CalendarScreen({ navigation }) {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Calendar Screen</Text>
-
+    <View style={styles.container}>
       <Calendar
         onDayPress={handleDayPress}
         markedDates={{
@@ -41,9 +39,22 @@ export default function CalendarScreen({ navigation }) {
         firstDay={1}
         markingType={"multi-dot"}
         theme={theme}
+        style={styles.calendar}
       />
 
       {/* <Button title="Go back to Home" onPress={() => navigation.goBack()} /> */}
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    // backgroundColor: "red",
+  },
+  calendar: {
+    width: 400,
+    height: "80%",
+  },
+});

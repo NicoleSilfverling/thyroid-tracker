@@ -6,12 +6,12 @@ const screenWidth = Dimensions.get("window").width;
 
 export default Graph = () => {
   const [data, setData] = useState([
-    { label: "Jan", value: 20 },
-    { label: "Feb", value: 45 },
-    { label: "Mar", value: 28 },
-    { label: "Apr", value: 80 },
-    { label: "May", value: 99 },
-    { label: "Jun", value: 43 },
+    { label: "Jan", value: 20, mood: 1 },
+    { label: "Feb", value: 45, mood: 3 },
+    { label: "Mar", value: 28, mood: 3 },
+    { label: "Apr", value: 80, mood: 5 },
+    { label: "May", value: 99, mood: 10 },
+    { label: "Jun", value: 43, mood: 1 },
   ]);
 
   const [selectedPoint, setSelectedPoint] = useState(null);
@@ -68,11 +68,13 @@ export default Graph = () => {
         onDataPointClick={handleDataPointClick}
         chartConfig={chartConfig}
       />
+
       <ScrollView contentContainerStyle={styles.listContainer}>
         {data.map((item) => (
           <View key={item.label} style={styles.item}>
             <Text>{item.label}</Text>
             <Text>{item.value}</Text>
+            <Text>{item.mood}</Text>
           </View>
         ))}
       </ScrollView>
