@@ -1,178 +1,48 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import LoginForm from "../components/LoginForm";
+import RegisterForm from "../components/RegisterForm";
 
-export default function LoginScreen({ navigation, setIsLoggedIn }) {
+export default function LoginScreen({ setIsLoggedIn }) {
   const [active, setActive] = useState("login");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-
-  const onChangeHandler = (name, value) => {
-    switch (name) {
-      case "firstName":
-        setFirstName(value);
-        break;
-      case "lastName":
-        setLastName(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
-      case "password":
-        setPassword(value);
-        break;
-      case "loginPassword":
-        setLoginPassword(value);
-        break;
-      case "loginEmail":
-        setLoginEmail(value);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const onSubmitLogin = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/authenticate",
-        {
-          email: loginEmail,
-          password: loginPassword,
-        }
-      );
-      // Handle the response here
-      console.log(response.data);
-      await AsyncStorage.setItem("token", response.data.token);
-      setIsLoggedIn(true);
-    } catch (error) {
-      // Handle error here
-      console.error(error);
-    }
-  };
-
-  const onSubmitRegister = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/register",
-        {
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          password: password,
-        }
-      );
-      // Handle the response here
-      console.log(response.data);
-    } catch (error) {
-      // Handle error here
-      console.error(error);
-    }
-  };
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.logo}>MyThyroid</Text>
+      <View
+        style={active == "login" ? styles.logoBoxLogin : styles.logoBoxRegister}
+      >
+        <Image
+          source={require("../assets/logoThy.png")}
+          style={active == "login" ? styles.imgLogin : styles.imgRegister}
+        />
+        <Text
+          style={active == "login" ? styles.logoLogin : styles.logoRegister}
+        >
+          MyThyroid
+        </Text>
+      </View>
 
+      <View style={styles.content}>
         {active === "login" ? (
-          <View>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.inputTxt}
-              placeholder="Email"
-              onChangeText={(value) => onChangeHandler("loginEmail", value)}
-            />
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-              style={styles.inputTxt}
-              placeholder="Password"
-              onChangeText={(value) => onChangeHandler("loginPassword", value)}
-              secureTextEntry={true}
-            />
-            <TouchableOpacity style={styles.signIn} onPress={onSubmitLogin}>
-              <Text style={{ color: "#fff" }}>Log in</Text>
-            </TouchableOpacity>
-          </View>
+          <LoginForm setIsLoggedIn={setIsLoggedIn} />
         ) : (
-          <View>
-            <Text style={styles.label}>First name</Text>
-            <TextInput
-              style={styles.inputTxt}
-              placeholder="First name"
-              onChangeText={(value) => onChangeHandler("firstName", value)}
-            />
-            <Text style={styles.label}>Last name</Text>
-            <TextInput
-              style={styles.inputTxt}
-              placeholder="Last name"
-              onChangeText={(value) => onChangeHandler("lastName", value)}
-              secureTextEntry={false}
-            />
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.inputTxt}
-              placeholder="Email"
-              onChangeText={(value) => onChangeHandler("email", value)}
-            />
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-              style={styles.inputTxt}
-              placeholder="Password"
-              onChangeText={(value) => onChangeHandler("password", value)}
-              secureTextEntry={true}
-            />
-            <TouchableOpacity style={styles.signIn} onPress={onSubmitRegister}>
-              <Text style={{ color: "#fff" }}>Register</Text>
-            </TouchableOpacity>
-          </View>
+          <RegisterForm setIsLoggedIn={setIsLoggedIn} />
         )}
-        <View style={styles.loginRegister}>
+
+        <View style={styles.loginRegisterBox}>
           {active == "login" ? (
             <View style={{ flexDirection: "row" }}>
               <Text>Don't have an account? </Text>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: active === "register" ? "#007bff" : "#fff",
-                }}
-                onPress={() => setActive("register")}
-              >
-                <Text
-                  style={{
-                    color: active === "register" ? "#fff" : "#007bff",
-                  }}
-                >
-                  Sign up
-                </Text>
+              <TouchableOpacity onPress={() => setActive("register")}>
+                <Text style={{ color: "#007bff" }}>Sign up</Text>
               </TouchableOpacity>
             </View>
           ) : (
             <View style={{ flexDirection: "row" }}>
               <Text>Have an account? </Text>
 
-              <TouchableOpacity
-                style={{
-                  backgroundColor: active === "login" ? "#007bff" : "#fff",
-                }}
-                onPress={() => setActive("login")}
-              >
-                <Text
-                  style={{ color: active === "login" ? "#fff" : "#007bff" }}
-                >
-                  Log in
-                </Text>
+              <TouchableOpacity onPress={() => setActive("login")}>
+                <Text style={{ color: "#007bff" }}>Log in</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -189,42 +59,46 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  loginRegister: {
+  content: {
+    width: "60%",
+  },
+  loginRegisterBox: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 20,
     justifyContent: "center",
   },
-  logo: {
+
+  logoBoxLogin: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  logoBoxRegister: {
+    alignItems: "center",
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+  logoLogin: {
     fontWeight: "bold",
     fontSize: 50,
     // color: "#fb5b5a",
     color: "#007bff",
-    marginBottom: 40,
+    marginBottom: 10,
   },
-
-  inputTxt: {
-    borderWidth: 1,
-    borderColor: "#ced4da",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 20,
+  logoRegister: {
+    fontWeight: "bold",
+    fontSize: 38,
+    // color: "#fb5b5a",
+    color: "#007bff",
   },
-  signIn: {
-    backgroundColor: "#007bff",
-    // backgroundColor: "#fb5b5a",
-    borderRadius: 5,
-    padding: 10,
-    justifyContent: "center",
-    alignItems: "center",
+  imgLogin: {
+    width: 150,
+    height: 150,
+    tintColor: "#007bff",
   },
-
-  label: {
-    // fontSize: 16,
-    // fontWeight: "bold",
-    textAlign: "left",
-    alignSelf: "stretch",
-    marginLeft: 5,
-    marginBottom: 5,
+  imgRegister: {
+    width: 80,
+    height: 80,
+    tintColor: "#007bff",
   },
 });
