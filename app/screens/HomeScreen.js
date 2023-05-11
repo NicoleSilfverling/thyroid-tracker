@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
 import NavigationBar from "../components/NavigationBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Welcome from "../components/Welcome";
 
 export default function HomeScreen({ navigation, setIsLoggedIn }) {
   const handleLogout = async () => {
@@ -14,7 +15,7 @@ export default function HomeScreen({ navigation, setIsLoggedIn }) {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.welcomebg}>
-          <Text>Welcome Nicki!</Text>
+          <Welcome />
         </View>
         <View style={styles.card}>
           <Button title="Logout" onPress={handleLogout} />
