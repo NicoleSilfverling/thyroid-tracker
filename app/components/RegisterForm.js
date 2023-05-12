@@ -9,6 +9,7 @@ import {
 import * as Yup from "yup";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Theme from "../assets/Theme";
 
 const RegisterSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -171,9 +172,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 5,
   },
-
   signIn: {
-    backgroundColor: "#007bff",
+    backgroundColor: Theme.colors.primary,
     // backgroundColor: "#fb5b5a",
     borderRadius: 5,
     padding: 10,

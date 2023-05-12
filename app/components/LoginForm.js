@@ -9,6 +9,7 @@ import {
 import * as Yup from "yup";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Theme from "../assets/Theme";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
   },
 
   signIn: {
-    backgroundColor: "#007bff",
+    backgroundColor: Theme.colors.primary,
     // backgroundColor: "#fb5b5a",
     borderRadius: 5,
     padding: 10,

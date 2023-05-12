@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import Theme from "../assets/Theme";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 
@@ -24,9 +25,15 @@ export default function LoginScreen({ setIsLoggedIn }) {
 
       <View style={styles.content}>
         {active === "login" ? (
-          <LoginForm setIsLoggedIn={setIsLoggedIn} />
+          <View>
+            <Text style={styles.title}>Log in</Text>
+            <LoginForm setIsLoggedIn={setIsLoggedIn} />
+          </View>
         ) : (
-          <RegisterForm setIsLoggedIn={setIsLoggedIn} />
+          <View>
+            <Text style={styles.title}>Sing up</Text>
+            <RegisterForm setIsLoggedIn={setIsLoggedIn} />
+          </View>
         )}
 
         <View style={styles.loginRegisterBox}>
@@ -34,7 +41,7 @@ export default function LoginScreen({ setIsLoggedIn }) {
             <View style={{ flexDirection: "row" }}>
               <Text>Don't have an account? </Text>
               <TouchableOpacity onPress={() => setActive("register")}>
-                <Text style={{ color: "#007bff" }}>Sign up</Text>
+                <Text style={{ color: Theme.colors.primary }}>Sign up</Text>
               </TouchableOpacity>
             </View>
           ) : (
@@ -42,7 +49,7 @@ export default function LoginScreen({ setIsLoggedIn }) {
               <Text>Have an account? </Text>
 
               <TouchableOpacity onPress={() => setActive("login")}>
-                <Text style={{ color: "#007bff" }}>Log in</Text>
+                <Text style={{ color: Theme.colors.primary }}>Log in</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -61,6 +68,11 @@ const styles = StyleSheet.create({
   },
   content: {
     width: "60%",
+  },
+  title: {
+    fontSize: 23,
+    fontWeight: "500",
+    textAlign: "center",
   },
   loginRegisterBox: {
     flexDirection: "row",
@@ -82,23 +94,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 50,
     // color: "#fb5b5a",
-    color: "#007bff",
+    color: Theme.colors.primary,
     marginBottom: 10,
   },
   logoRegister: {
     fontWeight: "bold",
     fontSize: 38,
     // color: "#fb5b5a",
-    color: "#007bff",
+    color: Theme.colors.primary,
   },
   imgLogin: {
     width: 150,
     height: 150,
-    tintColor: "#007bff",
+    tintColor: Theme.colors.primary,
   },
   imgRegister: {
     width: 80,
     height: 80,
-    tintColor: "#007bff",
+    tintColor: Theme.colors.primary,
   },
 });
