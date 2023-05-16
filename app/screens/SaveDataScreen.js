@@ -7,7 +7,7 @@ import {
   Modal,
   StyleSheet,
 } from "react-native";
-import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import SaveData from "../components/SaveData";
 import SymptomBtn from "../components/SymptomBtn";
 
@@ -16,6 +16,7 @@ export default function SaveDataScreen({ navigate }) {
   const [activeBtn, setActiveBtn] = useState("");
 
   const [selected, setSelected] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handlePress = (value) => {
     setActiveBtn(value);
@@ -31,9 +32,26 @@ export default function SaveDataScreen({ navigate }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Modal visible={popUpForm} transparent={true}>
-        <SaveData title={activeBtn} setpopUpForm={setpopUpForm} />
+        <SaveData
+          title={activeBtn}
+          setpopUpForm={setpopUpForm}
+          selectedDate={selectedDate}
+        />
       </Modal>
-      <View style={styles.container}></View>
+      <View style={styles.container}>
+        <DateTimePicker
+          value={selectedDate}
+          mode="date"
+          display="default"
+          maximumDate={new Date()}
+          onChange={(event, date) => {
+            if (date !== undefined) {
+              setSelectedDate(date);
+              console.log(selectedDate);
+            }
+          }}
+        />
+      </View>
       <View style={styles.content}>
         <SymptomBtn
           value="TSH"

@@ -9,6 +9,7 @@ import {
 import * as Yup from "yup";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import jwt_decode from "jwt-decode";
 
 const SubmitSchema = Yup.object().shape({
   value: Yup.string().required("Field is required"),
@@ -16,7 +17,8 @@ const SubmitSchema = Yup.object().shape({
   bottomRef: Yup.string().required("Field is required"),
 });
 
-export default function SaveData({ title, setpopUpForm }) {
+export default function SaveData({ title, setpopUpForm, selectedDate }) {
+  const date = selectedDate;
   const type = title;
   const [value, setValue] = useState("");
   const [topRef, setTopRef] = useState("");
@@ -35,15 +37,21 @@ export default function SaveData({ title, setpopUpForm }) {
       );
 
       try {
+        const token = await AsyncStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:8080/api/v1/user/save",
+          "http://localhost:8080/symptom",
           {
+            date: date,
             type: type,
             value: value,
             topRef: topRef,
             bottomRef: bottomRef,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
+        setpopUpForm(false);
       } catch (error) {
         const errorMessage = error.message;
         console.error(error);

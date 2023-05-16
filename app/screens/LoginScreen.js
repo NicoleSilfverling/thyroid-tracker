@@ -31,7 +31,7 @@ export default function LoginScreen({ setIsLoggedIn }) {
           </View>
         ) : (
           <View>
-            <Text style={styles.title}>Sing up</Text>
+            <Text style={styles.title}>Sign up</Text>
             <RegisterForm setIsLoggedIn={setIsLoggedIn} />
           </View>
         )}
