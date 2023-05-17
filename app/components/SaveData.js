@@ -39,7 +39,7 @@ export default function SaveData({ title, setpopUpForm, selectedDate }) {
       try {
         const token = await AsyncStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:8080/symptom",
+          "http://localhost:8080/api/v1/user/symptom",
           {
             date: date,
             type: type,

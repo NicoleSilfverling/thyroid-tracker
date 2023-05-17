@@ -5,7 +5,7 @@ import NavigationBar from "../components/NavigationBar";
 
 export default function GraphScreen({ navigation }) {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <View style={styles.container}>
         <Graph />
         <NavigationBar navigation={navigation} />

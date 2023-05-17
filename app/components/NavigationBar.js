@@ -1,50 +1,115 @@
-import React from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import React, { useContext } from "react";
+import { View, StyleSheet, TouchableOpacity, Text, Image } from "react-native";
+import Theme from "../assets/Theme";
+import { NavContext } from "./NavContext";
 
 const NavigationBar = ({ navigation }) => {
+  const { activeIcon, setActiveIcon } = useContext(NavContext);
+
   return (
     <View style={styles.navbar}>
-      {/* Home */}
-      <TouchableOpacity
-        style={styles.navbarItem}
-        onPress={() => navigation.navigate("Home")}
-      >
-        <Text style={styles.navbarItemText}>Hem</Text>
-      </TouchableOpacity>
-
-      {/* Meds */}
-      <TouchableOpacity
-        style={styles.navbarItem}
-        onPress={() => navigation.navigate("Meds")}
-      >
-        <Text style={styles.navbarItemText}>Meds</Text>
-      </TouchableOpacity>
-
-      {/* SaveData */}
-      <TouchableOpacity
-        style={[styles.navbarItem, styles.plusBtn]}
-        onPress={() => navigation.navigate("SaveData")}
-      >
-        <Text style={styles.navbarItemText}>+</Text>
-      </TouchableOpacity>
-
-      {/* Details */}
-      <TouchableOpacity
-        style={styles.navbarItem}
-        onPress={() => navigation.navigate("Calendar")}
-      >
-        <Text style={styles.navbarItemText}>Calendar</Text>
-      </TouchableOpacity>
-
-      {/* Graph */}
-      <TouchableOpacity style={styles.navbarItem}>
-        <Text
-          style={styles.navbarItemText}
-          onPress={() => navigation.navigate("Graph")}
+      <View style={styles.iconButtonContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            setActiveIcon("home"), navigation.navigate("Home");
+          }}
         >
-          Graph
+          {activeIcon === "home" ? (
+            <Image
+              style={styles.iconActive}
+              source={require("../images/icons/homeFilled.png")}
+            />
+          ) : (
+            <Image
+              style={styles.icon}
+              source={require("../images/icons/home.png")}
+            />
+          )}
+        </TouchableOpacity>
+        <Text style={styles.txt}>Home</Text>
+      </View>
+
+      <View style={styles.iconButtonContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            setActiveIcon("calendar"), navigation.navigate("Calendar");
+          }}
+        >
+          {activeIcon === "calendar" ? (
+            <Image
+              style={styles.iconActive}
+              source={require("../images/icons/calendarFilled.png")}
+            />
+          ) : (
+            <Image
+              style={styles.icon}
+              source={require("../images/icons/calendar.png")}
+            />
+          )}
+        </TouchableOpacity>
+        <Text style={styles.txt}>Calendar</Text>
+      </View>
+
+      <TouchableOpacity
+        style={[
+          styles.plusBtn,
+          activeIcon === "saveData" ? styles.plusActive : null,
+        ]}
+        onPress={() => {
+          setActiveIcon("saveData"), navigation.navigate("SaveData");
+        }}
+      >
+        <Text
+          style={[
+            styles.plus,
+            activeIcon === "saveData" ? styles.plusActive : null,
+          ]}
+        >
+          +
         </Text>
       </TouchableOpacity>
+
+      <View style={styles.iconButtonContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            setActiveIcon("graph"), navigation.navigate("Graph");
+          }}
+        >
+          {activeIcon === "graph" ? (
+            <Image
+              style={styles.iconActive}
+              source={require("../images/icons/chartFilled.png")}
+            />
+          ) : (
+            <Image
+              style={styles.icon}
+              source={require("../images/icons/chart.png")}
+            />
+          )}
+        </TouchableOpacity>
+        <Text style={styles.txt}>Charts</Text>
+      </View>
+
+      <View style={styles.iconButtonContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            setActiveIcon("meds"), navigation.navigate("Meds");
+          }}
+        >
+          {activeIcon === "meds" ? (
+            <Image
+              style={styles.iconActive}
+              source={require("../images/icons/capsulesFilled.png")}
+            />
+          ) : (
+            <Image
+              style={styles.icon}
+              source={require("../images/icons/capsules.png")}
+            />
+          )}
+        </TouchableOpacity>
+        <Text style={styles.txt}>Medicin</Text>
+      </View>
     </View>
   );
 };
@@ -54,7 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     height: 50,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     alignItems: "center",
     borderTopWidth: 1,
     borderTopColor: "#ccc",
@@ -62,23 +127,42 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+    paddingTop: 10,
   },
-  navbarItem: {
-    flex: 1,
-    alignItems: "center",
+  iconButtonContainer: {
     justifyContent: "center",
+    alignItems: "center",
   },
-  navbarItemText: {
-    fontSize: 16,
-    fontWeight: "bold",
+  txt: {
+    fontSize: 14,
+    color: "gray",
+    marginTop: 3,
+  },
+  plus: {
+    fontSize: 30,
+    color: Theme.colors.primary,
   },
   plusBtn: {
-    // width: 50,
-    // height: 50,
+    width: 50,
+    height: 50,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 50,
+    borderColor: Theme.colors.primary,
+    backgroundColor: "#fff",
+    marginBottom: 15,
+  },
+  plusActive: {
+    borderColor: Theme.colors.primary,
+    backgroundColor: Theme.colors.primary,
+    color: "#fff",
+  },
+  icon: {
+    tintColor: "gray",
+  },
+  iconActive: {
+    tintColor: Theme.colors.primary,
   },
 });
 
