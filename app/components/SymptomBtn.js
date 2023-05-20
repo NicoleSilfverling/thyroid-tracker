@@ -2,13 +2,13 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Theme from "../assets/Theme";
 
-export default SymptomBtn = ({
+export default function SymptomBtn({
   value,
   label,
-  selected,
   onPress,
   colorGroup,
-}) => {
+  fetchedData,
+}) {
   const handlePress = () => {
     onPress(value);
   };
@@ -18,23 +18,23 @@ export default SymptomBtn = ({
   switch (colorGroup) {
     case 1:
       color = Theme.colors.red;
-
       break;
     case 2:
       color = Theme.colors.primary;
       break;
-
     default:
       color = Theme.colors.blue;
       break;
   }
+
+  const hasMatchingType = fetchedData.some((symptom) => symptom.type === label);
 
   return (
     <TouchableOpacity
       style={[
         styles.button,
         { borderColor: color },
-        selected && { backgroundColor: color },
+        hasMatchingType && { backgroundColor: color },
       ]}
       onPress={handlePress}
     >
@@ -42,14 +42,20 @@ export default SymptomBtn = ({
         style={[
           styles.buttonText,
           { color: color },
-          selected && { color: "white" },
+          hasMatchingType && { color: "white" },
         ]}
       >
         {label}
       </Text>
+      {/* {hasMatchingType && colorGroup == 1 && (
+        <Text style={{ color: "#FFF", fontSize: 20 }}>
+          {fetchedData[0].value} pmol
+        </Text>
+      )} */}
     </TouchableOpacity>
   );
-};
+}
+
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",

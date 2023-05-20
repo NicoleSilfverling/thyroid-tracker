@@ -1,48 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-function SymptomsList() {
-  const [symptoms, setSymptoms] = useState([]);
-
-  useEffect(() => {
-    const fetchSymptoms = async () => {
-      const token = await AsyncStorage.getItem("token");
-
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const result = await axios.get(
-        `http://localhost:8080/api/v1/user/symptoms/`,
-        {
-          params: {
-            date: "2023-05-17",
-          },
-          config,
-        }
-      );
-      setSymptoms(result.data);
-    };
-    fetchSymptoms();
-  }, []);
-
+function SymptomsList({ fetchedData, selectedDate }) {
   return (
     <View style={styles.container}>
-      {symptoms.length > 0 ? (
-        <FlatList
-          data={symptoms}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.item}>
-              <Text style={styles.text}>
-                Date: {item.date}, Symptom: {item.symptomType}
-              </Text>
+      <Text style={styles.title}>Saved symptoms {selectedDate}</Text>
+      {fetchedData.length > 0 ? (
+        <View>
+          <View style={styles.item}>
+            <View style={styles.textContainer}>
+              <Text style={styles.label}>Type</Text>
             </View>
-          )}
-        />
+            <View style={styles.textContainer}>
+              <Text style={styles.label}>Value</Text>
+            </View>
+            {/* <View style={styles.textContainer}>
+          <Text style={styles.label}>Ref</Text>
+        </View> */}
+          </View>
+          <FlatList
+            data={fetchedData}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.item}>
+                <View style={styles.textContainer}>
+                  <Text style={styles.text}>{item.type}</Text>
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.text}>{item.value}</Text>
+                </View>
+                {/* <View style={styles.textContainer}>
+                <Text style={styles.text}>
+                  {item.bottomRef}-{item.topRef}
+                </Text>
+              </View> */}
+              </View>
+            )}
+          />
+        </View>
       ) : (
         <Text style={styles.text}>No symptoms found.</Text>
       )}
@@ -52,16 +47,33 @@ function SymptomsList() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: "100%",
     padding: 10,
+    marginTop: 60,
+    alignItems: "center",
   },
   item: {
+    width: 300,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
     paddingVertical: 10,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  textContainer: {
+    width: 80,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "500",
   },
   text: {
     fontSize: 16,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "500",
+    marginBottom: 10,
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,6 @@ import {
 import * as Yup from "yup";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import jwt_decode from "jwt-decode";
 
 const SubmitSchema = Yup.object().shape({
   value: Yup.string().required("Field is required"),
@@ -17,7 +16,12 @@ const SubmitSchema = Yup.object().shape({
   bottomRef: Yup.string().required("Field is required"),
 });
 
-export default function SaveData({ title, setpopUpForm, selectedDate }) {
+export default function SaveData({
+  title,
+  setpopUpForm,
+  selectedDate,
+  setNewData,
+}) {
   const date = selectedDate;
   const type = title;
   const [value, setValue] = useState("");
@@ -51,6 +55,7 @@ export default function SaveData({ title, setpopUpForm, selectedDate }) {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
+        setNewData(true);
         setpopUpForm(false);
       } catch (error) {
         const errorMessage = error.message;

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { View, StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 import Theme from "../assets/Theme";
-import { NavContext } from "./NavContext";
+import { NavContext } from "../contexts/NavContext";
 
 const NavigationBar = ({ navigation }) => {
   const { activeIcon, setActiveIcon } = useContext(NavContext);

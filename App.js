@@ -9,7 +9,7 @@ import SaveDataScreen from "./app/screens/SaveDataScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
-import { NavProvider } from "./app/components/NavContext";
+import { NavProvider } from "./app/contexts/NavContext";
 
 const Stack = createStackNavigator();
 
