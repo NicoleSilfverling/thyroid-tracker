@@ -11,9 +11,15 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SubmitSchema = Yup.object().shape({
-  value: Yup.string().required("Field is required"),
-  topRef: Yup.string().required("Field is required"),
-  bottomRef: Yup.string().required("Field is required"),
+  value: Yup.number()
+    .typeError("Must be a number")
+    .required("Field is required"),
+  topRef: Yup.number()
+    .typeError("Must be a number")
+    .required("Field is required"),
+  bottomRef: Yup.number()
+    .typeError("Must be a number")
+    .required("Field is required"),
 });
 
 export default function SaveData({
@@ -24,9 +30,9 @@ export default function SaveData({
 }) {
   const date = selectedDate;
   const type = title;
-  const [value, setValue] = useState("");
-  const [topRef, setTopRef] = useState("");
-  const [bottomRef, setBottomRef] = useState("");
+  const [value, setValue] = useState();
+  const [topRef, setTopRef] = useState();
+  const [bottomRef, setBottomRef] = useState();
   const [errors, setErrors] = useState({});
 
   const handleSubmit = async () => {
@@ -43,7 +49,7 @@ export default function SaveData({
       try {
         const token = await AsyncStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:8080/api/v1/user/symptom",
+          "http://localhost:8080/symptom",
           {
             date: date,
             type: type,
@@ -75,7 +81,12 @@ export default function SaveData({
       <Text style={styles.title}>{title}</Text>
       <View style={styles.inputBox}>
         <Text style={styles.label}>value</Text>
-        <TextInput style={styles.input} onChangeText={setValue} value={value} />
+        <TextInput
+          style={styles.input}
+          onChangeText={setValue}
+          value={value}
+          keyboardType="numeric"
+        />
         {errors.value && <Text style={styles.error}>{errors.value}</Text>}
       </View>
       <View style={styles.inputBox}>
@@ -84,6 +95,7 @@ export default function SaveData({
           style={styles.input}
           onChangeText={setTopRef}
           value={topRef}
+          keyboardType="numeric"
         />
         {errors.topRef && <Text style={styles.error}>{errors.topRef}</Text>}
       </View>
@@ -93,6 +105,7 @@ export default function SaveData({
           style={styles.input}
           onChangeText={setBottomRef}
           value={bottomRef}
+          keyboardType="numeric"
         />
         {errors.bottomRef && (
           <Text style={styles.error}>{errors.bottomRef}</Text>
