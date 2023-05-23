@@ -1,35 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { LineChart } from "react-native-chart-kit";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const screenWidth = Dimensions.get("window").width;
 
-export default Graph = () => {
-  const [data, setData] = useState([
-    { label: "Jan", value: 20, mood: 1 },
-    { label: "Feb", value: 45, mood: 3 },
-    { label: "Mar", value: 28, mood: 3 },
-    { label: "Apr", value: 80, mood: 5 },
-    { label: "May", value: 99, mood: 10 },
-    { label: "Jun", value: 43, mood: 1 },
-  ]);
+export default Graph = ({ selectedOption }) => {
+  const [fetchedData, setFetchedData] = useState([]);
 
-  const [selectedPoint, setSelectedPoint] = useState(null);
+  useEffect(() => {
+    fetchSymptomData();
+  }, [selectedOption]);
 
-  function handleDataPointClick(data) {
-    setSelectedPoint(data);
-    console.log(data);
-  }
+  const fetchSymptomData = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const headers = { Authorization: `Bearer ${token}` };
+
+      const response = await axios.get(
+        `http://localhost:8080/symptoms/type/${selectedOption}`,
+        { headers }
+      );
+      setFetchedData(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching symptom data:", error);
+    }
+  };
 
   const chartData = {
-    labels: data.map((d) => d.label),
+    labels: fetchedData.map((d) => d.label),
     datasets: [
       {
-        data: data.map((d) => d.value),
-        //color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // blue
+        data: fetchedData.map((d) => d.value),
         color: (opacity = 1) => {
           if (selectedPoint) {
-            // && id?
             return `rgba(255, 0, 0, ${opacity})`; // red if selected
           }
           return `rgba(0, 0, 255, ${opacity})`; // blue if not selected
@@ -56,8 +62,24 @@ export default Graph = () => {
     },
   };
 
+  const [selectedPoint, setSelectedPoint] = useState(null);
+
+  function handleDataPointClick(data) {
+    setSelectedPoint(data);
+    console.log(data);
+  }
+
   return (
     <View style={styles.container}>
+      {fetchedData.length > 0 ? (
+        <View style={styles.dataContainer}>
+          <Text>Type: {fetchedData[0].type}</Text>
+          <Text>Value: {fetchedData[0].value}</Text>
+          <Text>Top Ref: {fetchedData[0].topRef}</Text>
+          <Text>Bottom Ref: {fetchedData[0].bottomRef}</Text>
+        </View>
+      ) : null}
+
       <Text style={{ textAlign: "center", padding: 10 }}>
         {selectedPoint ? `Selected value: ${selectedPoint.value}` : ""}
       </Text>
@@ -70,11 +92,13 @@ export default Graph = () => {
       />
 
       <ScrollView contentContainerStyle={styles.listContainer}>
-        {data.map((item) => (
+        {fetchedData.map((item) => (
           <View key={item.label} style={styles.item}>
-            <Text>{item.label}</Text>
+            <Text>{item.date}</Text>
             <Text>{item.value}</Text>
-            <Text>{item.mood}</Text>
+            <Text>
+              {item.topRef}-{item.bottomRef}
+            </Text>
           </View>
         ))}
       </ScrollView>
