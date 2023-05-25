@@ -35,9 +35,9 @@ export default function GraphScreen({ navigation }) {
               </View>
             )}
           />
-          <Text style={styles.selectedOption}>
+          {/* <Text style={styles.selectedOption}>
             Selected option: {selectedOption ? selectedOption : "None"}
-          </Text>
+          </Text> */}
         </View>
         <Graph selectedOption={selectedOption} />
         <NavigationBar navigation={navigation} />

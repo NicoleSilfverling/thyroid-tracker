@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Theme from "../assets/Theme";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -30,17 +31,17 @@ export default Graph = ({ selectedOption }) => {
   };
 
   const chartData = {
-    labels: fetchedData.map((d) => d.label),
+    labels: fetchedData.map((d) => d.date),
     datasets: [
       {
         data: fetchedData.map((d) => d.value),
-        color: (opacity = 1) => {
-          if (selectedPoint) {
-            return `rgba(255, 0, 0, ${opacity})`; // red if selected
-          }
-          return `rgba(0, 0, 255, ${opacity})`; // blue if not selected
-        },
-        strokeWidth: 2, // optional
+        // color: (opacity = 1) => {
+        //   if (selectedPoint) {
+        //     return `rgba(255, 0, 0, ${opacity})`; // red if selected
+        //   }
+        //   return Theme.colors.primary; // blue if not selected
+        // },
+        // strokeWidth: 2, // optional
       },
     ],
   };
@@ -50,7 +51,7 @@ export default Graph = ({ selectedOption }) => {
     backgroundGradientFrom: "#ffffff",
     backgroundGradientTo: "#ffffff",
     decimalPlaces: 0, // optional, defaults to 2dp
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // black
+    color: (opacity = 1) => Theme.colors.primary, // black
     labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // black
     style: {
       borderRadius: 16,
@@ -58,50 +59,60 @@ export default Graph = ({ selectedOption }) => {
     propsForDots: {
       r: "6",
       strokeWidth: "2",
-      stroke: "blue",
+      stroke: Theme.colors.primary,
     },
   };
 
   const [selectedPoint, setSelectedPoint] = useState(null);
 
   function handleDataPointClick(data) {
-    setSelectedPoint(data);
-    console.log(data);
+    const selectedIndex = data.index;
+    const selectedData = fetchedData[selectedIndex];
+    setSelectedPoint(selectedData.date);
   }
 
   return (
     <View style={styles.container}>
       {fetchedData.length > 0 ? (
-        <View style={styles.dataContainer}>
-          <Text>Type: {fetchedData[0].type}</Text>
-          <Text>Value: {fetchedData[0].value}</Text>
-          <Text>Top Ref: {fetchedData[0].topRef}</Text>
-          <Text>Bottom Ref: {fetchedData[0].bottomRef}</Text>
-        </View>
+        <>
+          <Text style={{ textAlign: "center", padding: 10 }}>
+            {selectedPoint ? `Selected value: ${selectedPoint.value}` : ""}
+          </Text>
+          <LineChart
+            data={chartData}
+            width={screenWidth}
+            height={220}
+            onDataPointClick={handleDataPointClick}
+            chartConfig={chartConfig}
+          />
+
+          <ScrollView contentContainerStyle={styles.listContainer}>
+            <View style={styles.item}>
+              <Text>Date</Text>
+              <Text>Value</Text>
+              <Text>Ref</Text>
+            </View>
+            {fetchedData.map((item) => (
+              <View
+                key={item.id}
+                style={[
+                  styles.item,
+                  selectedPoint &&
+                    selectedPoint === item.date && {
+                      backgroundColor: "#eee",
+                    },
+                ]}
+              >
+                <Text>{item.date}</Text>
+                <Text>{item.value}</Text>
+                <Text>
+                  {item.topRef}-{item.bottomRef}
+                </Text>
+              </View>
+            ))}
+          </ScrollView>
+        </>
       ) : null}
-
-      <Text style={{ textAlign: "center", padding: 10 }}>
-        {selectedPoint ? `Selected value: ${selectedPoint.value}` : ""}
-      </Text>
-      <LineChart
-        data={chartData}
-        width={screenWidth}
-        height={220}
-        onDataPointClick={handleDataPointClick}
-        chartConfig={chartConfig}
-      />
-
-      <ScrollView contentContainerStyle={styles.listContainer}>
-        {fetchedData.map((item) => (
-          <View key={item.label} style={styles.item}>
-            <Text>{item.date}</Text>
-            <Text>{item.value}</Text>
-            <Text>
-              {item.topRef}-{item.bottomRef}
-            </Text>
-          </View>
-        ))}
-      </ScrollView>
     </View>
   );
 };
