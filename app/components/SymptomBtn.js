@@ -6,7 +6,7 @@ export default function SymptomBtn({
   value,
   label,
   onPress,
-  colorGroup,
+  group,
   fetchedData,
 }) {
   const handlePress = () => {
@@ -15,7 +15,7 @@ export default function SymptomBtn({
 
   let color = "";
 
-  switch (colorGroup) {
+  switch (group) {
     case 1:
       color = Theme.colors.red;
       break;
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderWidth: 3,
     borderRadius: 100,
+    marginBottom: 20,
   },
   buttonText: {
     fontSize: 25,

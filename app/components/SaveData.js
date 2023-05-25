@@ -9,6 +9,7 @@ import {
 import * as Yup from "yup";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import SymptomSlider from "./SymptomSlider";
 
 const SubmitSchema = Yup.object().shape({
   value: Yup.number()
@@ -24,6 +25,7 @@ const SubmitSchema = Yup.object().shape({
 
 export default function SaveData({
   title,
+  activeGroup,
   setpopUpForm,
   selectedDate,
   setNewData,
@@ -34,6 +36,12 @@ export default function SaveData({
   const [topRef, setTopRef] = useState();
   const [bottomRef, setBottomRef] = useState();
   const [errors, setErrors] = useState({});
+
+  const handleSliderValueChange = (val) => {
+    setValue(val);
+    setTopRef(10);
+    setBottomRef(1);
+  };
 
   const handleSubmit = async () => {
     try {
@@ -79,38 +87,44 @@ export default function SaveData({
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      <View style={styles.inputBox}>
-        <Text style={styles.label}>value</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setValue}
-          value={value}
-          keyboardType="numeric"
-        />
-        {errors.value && <Text style={styles.error}>{errors.value}</Text>}
-      </View>
-      <View style={styles.inputBox}>
-        <Text style={styles.label}>top ref</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setTopRef}
-          value={topRef}
-          keyboardType="numeric"
-        />
-        {errors.topRef && <Text style={styles.error}>{errors.topRef}</Text>}
-      </View>
-      <View style={styles.inputBox}>
-        <Text style={styles.label}>bottom ref</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setBottomRef}
-          value={bottomRef}
-          keyboardType="numeric"
-        />
-        {errors.bottomRef && (
-          <Text style={styles.error}>{errors.bottomRef}</Text>
-        )}
-      </View>
+      {activeGroup === 1 ? (
+        <View>
+          <View style={styles.inputBox}>
+            <Text style={styles.label}>value</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={setValue}
+              value={value}
+              keyboardType="numeric"
+            />
+            {errors.value && <Text style={styles.error}>{errors.value}</Text>}
+          </View>
+          <View style={styles.inputBox}>
+            <Text style={styles.label}>top ref</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={setTopRef}
+              value={topRef}
+              keyboardType="numeric"
+            />
+            {errors.topRef && <Text style={styles.error}>{errors.topRef}</Text>}
+          </View>
+          <View style={styles.inputBox}>
+            <Text style={styles.label}>bottom ref</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={setBottomRef}
+              value={bottomRef}
+              keyboardType="numeric"
+            />
+            {errors.bottomRef && (
+              <Text style={styles.error}>{errors.bottomRef}</Text>
+            )}
+          </View>
+        </View>
+      ) : (
+        <SymptomSlider value={value} onValueChange={handleSliderValueChange} />
+      )}
 
       <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
         <Text style={{ color: "#fff" }}>Save</Text>

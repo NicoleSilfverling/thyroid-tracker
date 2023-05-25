@@ -17,9 +17,48 @@ import SymptomBtn from "../components/SymptomBtn";
 import SymptomsList from "../components/SymptomsList";
 import NavigationBar from "../components/NavigationBar";
 
+const symptomBtnData = [
+  {
+    group: 1,
+    value: "TSH",
+    label: "TSH",
+  },
+  {
+    group: 1,
+    value: "T3",
+    label: "T3",
+  },
+  {
+    group: 1,
+    value: "T4",
+    label: "T4",
+  },
+  {
+    group: 2,
+    value: "Energy",
+    label: "Energy",
+  },
+  {
+    group: 2,
+    value: "Health",
+    label: "Health",
+  },
+  {
+    group: 2,
+    value: "Anxiety",
+    label: "Anxiety",
+  },
+  // {
+  //   group: 2,
+  //   value: "Muscle weakness",
+  //   label: "Muscle weakness",
+  // },
+];
+
 export default function SaveDataScreen({ navigation }) {
   const [popUpForm, setpopUpForm] = useState(false);
   const [activeBtn, setActiveBtn] = useState("");
+  const [activeGroup, setActiveGroup] = useState("");
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const formattedDate = format(selectedDate, "yyyy-MM-dd");
@@ -27,8 +66,11 @@ export default function SaveDataScreen({ navigation }) {
 
   const [fetchedData, setFetchedData] = useState([]);
 
-  const handlePress = (value) => {
+  const handlePress = (value, group) => {
+    setActiveGroup(group);
+    console.log(activeGroup);
     setActiveBtn(value);
+    console.log(value);
     setpopUpForm(true);
   };
 
@@ -58,6 +100,7 @@ export default function SaveDataScreen({ navigation }) {
       <Modal visible={popUpForm} transparent={true}>
         <SaveData
           title={activeBtn}
+          activeGroup={activeGroup}
           setpopUpForm={setpopUpForm}
           selectedDate={formattedDate}
           setNewData={setNewData}
@@ -80,56 +123,17 @@ export default function SaveDataScreen({ navigation }) {
 
           <View style={styles.contentContainer}>
             <View style={styles.content}>
-              <SymptomBtn
-                colorGroup={1}
-                value="TSH"
-                label="TSH"
-                selectedDate={formattedDate}
-                fetchedData={fetchedData}
-                onPress={handlePress}
-              />
-              <SymptomBtn
-                colorGroup={1}
-                value="T3"
-                label="T3"
-                selectedDate={formattedDate}
-                fetchedData={fetchedData}
-                onPress={handlePress}
-              />
-              <SymptomBtn
-                colorGroup={1}
-                value="T4"
-                label="T4"
-                selectedDate={formattedDate}
-                fetchedData={fetchedData}
-                onPress={handlePress}
-              />
-            </View>
-            <View style={styles.content}>
-              <SymptomBtn
-                colorGroup={2}
-                value="4"
-                label="4"
-                selectedDate={formattedDate}
-                fetchedData={fetchedData}
-                onPress={handlePress}
-              />
-              <SymptomBtn
-                colorGroup={2}
-                value="5"
-                label="5"
-                selectedDate={formattedDate}
-                fetchedData={fetchedData}
-                onPress={handlePress}
-              />
-              <SymptomBtn
-                colorGroup={2}
-                value="6"
-                label="6"
-                selectedDate={formattedDate}
-                fetchedData={fetchedData}
-                onPress={handlePress}
-              />
+              {symptomBtnData.map((symptomBtnData, index) => (
+                <SymptomBtn
+                  key={index}
+                  group={symptomBtnData.group}
+                  value={symptomBtnData.value}
+                  label={symptomBtnData.label}
+                  selectedDate={formattedDate}
+                  fetchedData={fetchedData}
+                  onPress={(value) => handlePress(value, symptomBtnData.group)}
+                />
+              ))}
             </View>
           </View>
           <SymptomsList
@@ -139,16 +143,6 @@ export default function SaveDataScreen({ navigation }) {
         </View>
         <NavigationBar navigation={navigation} />
       </View>
-
-      {/* <FlatList
-        data={fetchedData}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View>
-            <Text>{item.label}</Text>
-          </View>
-        )}
-      /> */}
     </SafeAreaView>
   );
 }
@@ -174,5 +168,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     marginTop: 30,
+    flexWrap: "wrap",
   },
 });
