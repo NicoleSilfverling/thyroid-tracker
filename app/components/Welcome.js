@@ -1,33 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import { fetchUserFirstname } from "../api/api";
 
 export default function Welcome() {
-  const [firstName, setFirstName] = useState("");
-
-  const getUserInfo = async () => {
-    const token = await AsyncStorage.getItem("token");
-    const response = await axios.get(
-      "http://localhost:8080/api/v1/user/firstname",
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    return response.data;
-  };
+  const [firstname, setFirstname] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const userInfo = await getUserInfo();
-      setFirstName(userInfo);
+      try {
+        const userFirstname = await fetchUserFirstname();
+        setFirstname(userFirstname);
+      } catch (error) {
+        console.error("Error fetching user firstname:", error);
+      }
     };
     fetchData();
   }, []);
 
   return (
     <View>
-      <Text>Welcome, {firstName}!</Text>
+      <Text>Welcome, {firstname}!</Text>
     </View>
   );
 }

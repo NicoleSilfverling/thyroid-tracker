@@ -15,44 +15,7 @@ import SymptomBtn from "../components/SymptomBtn";
 import SymptomsList from "../components/SymptomsList";
 import NavigationBar from "../components/NavigationBar";
 import { fetchSymptomDataByDate } from "../api/api";
-
-const symptomBtnData = [
-  {
-    group: 1,
-    value: "TSH",
-    label: "TSH",
-  },
-  {
-    group: 1,
-    value: "T3",
-    label: "T3",
-  },
-  {
-    group: 1,
-    value: "T4",
-    label: "T4",
-  },
-  {
-    group: 2,
-    value: "Energy",
-    label: "Energy",
-  },
-  {
-    group: 2,
-    value: "Health",
-    label: "Health",
-  },
-  {
-    group: 2,
-    value: "Anxiety",
-    label: "Anxiety",
-  },
-  // {
-  //   group: 2,
-  //   value: "Muscle weakness",
-  //   label: "Muscle weakness",
-  // },
-];
+import { symptomOptions } from "../constants/symptomOptions";
 
 export default function SaveDataScreen({ navigation }) {
   const [popUpForm, setpopUpForm] = useState(false);
@@ -67,9 +30,7 @@ export default function SaveDataScreen({ navigation }) {
 
   const handlePress = (value, group) => {
     setActiveGroup(group);
-    console.log(activeGroup);
     setActiveBtn(value);
-    console.log(value);
     setpopUpForm(true);
   };
 
@@ -115,18 +76,50 @@ export default function SaveDataScreen({ navigation }) {
           />
 
           <View style={styles.contentContainer}>
+            <Text>Bloodwork</Text>
             <View style={styles.content}>
-              {symptomBtnData.map((symptomBtnData, index) => (
-                <SymptomBtn
-                  key={index}
-                  group={symptomBtnData.group}
-                  value={symptomBtnData.value}
-                  label={symptomBtnData.label}
-                  selectedDate={formattedDate}
-                  fetchedData={fetchedData}
-                  onPress={(value) => handlePress(value, symptomBtnData.group)}
-                />
-              ))}
+              {symptomOptions.map((symptomOption, index) => {
+                if (symptomOption.group === 1) {
+                  return (
+                    <SymptomBtn
+                      key={index}
+                      group={symptomOption.group}
+                      value={symptomOption.label}
+                      label={symptomOption.label}
+                      selectedDate={formattedDate}
+                      fetchedData={fetchedData}
+                      onPress={(value) =>
+                        handlePress(value, symptomOption.group)
+                      }
+                    />
+                  );
+                } else {
+                  return null;
+                }
+              })}
+            </View>
+
+            <Text>Symptoms</Text>
+            <View style={styles.content}>
+              {symptomOptions.map((symptomOption, index) => {
+                if (symptomOption.group === 2) {
+                  return (
+                    <SymptomBtn
+                      key={index}
+                      group={symptomOption.group}
+                      value={symptomOption.label}
+                      label={symptomOption.label}
+                      selectedDate={formattedDate}
+                      fetchedData={fetchedData}
+                      onPress={(value) =>
+                        handlePress(value, symptomOption.group)
+                      }
+                    />
+                  );
+                } else {
+                  return null;
+                }
+              })}
             </View>
           </View>
           <SymptomsList
@@ -155,12 +148,13 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     width: "100%",
+    marginTop: 30,
   },
   content: {
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    marginTop: 30,
+    marginBottom: 10,
     flexWrap: "wrap",
   },
 });

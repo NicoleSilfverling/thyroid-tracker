@@ -3,8 +3,9 @@ import { View, SafeAreaView, StyleSheet, Text } from "react-native";
 import Graph from "../components/Graph";
 import NavigationBar from "../components/NavigationBar";
 import ModalDropdown from "react-native-modal-dropdown";
+import { symptomOptions } from "../constants/symptomOptions";
 
-const options = ["TSH", "T3", "T4", "Weight", "Energy"];
+// const options = ["TSH", "T3", "T4", "Weight", "Energy"];
 
 export default function GraphScreen({ navigation }) {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -19,7 +20,7 @@ export default function GraphScreen({ navigation }) {
         <View style={styles.dropdownContainer}>
           <Text style={styles.title}>Select an option:</Text>
           <ModalDropdown
-            options={options}
+            options={symptomOptions.map((option) => option.label)}
             style={styles.dropdown}
             dropdownStyle={styles.dropdownContainer}
             dropdownTextStyle={styles.dropdownText}

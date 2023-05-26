@@ -7,9 +7,8 @@ import {
   StyleSheet,
 } from "react-native";
 import * as Yup from "yup";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import SymptomSlider from "./SymptomSlider";
+import { postSymptomData } from "../api/api";
 
 const SubmitSchema = Yup.object().shape({
   value: Yup.number()
@@ -39,7 +38,7 @@ export default function SaveData({
 
   const handleSliderValueChange = (val) => {
     setValue(val);
-    setTopRef(10);
+    setTopRef(5);
     setBottomRef(1);
   };
 
@@ -54,27 +53,17 @@ export default function SaveData({
         { abortEarly: false }
       );
 
-      try {
-        const token = await AsyncStorage.getItem("token");
-        const response = await axios.post(
-          "http://localhost:8080/symptom",
-          {
-            date: date,
-            type: type,
-            value: value,
-            topRef: topRef,
-            bottomRef: bottomRef,
-          },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setNewData(true);
-        setpopUpForm(false);
-      } catch (error) {
-        const errorMessage = error.message;
-        console.error(error);
-      }
+      const data = {
+        date: date,
+        type: type,
+        value: value,
+        topRef: topRef,
+        bottomRef: bottomRef,
+      };
+      await postSymptomData(data);
+
+      setNewData(true);
+      setpopUpForm(false);
     } catch (error) {
       const validationErrors = {};
       error.inner.forEach((err) => {
