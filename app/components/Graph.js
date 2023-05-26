@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Theme from "../assets/Theme";
+import { fetchSymptomDataByType } from "../api/api";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -16,17 +15,11 @@ export default Graph = ({ selectedOption }) => {
 
   const fetchSymptomData = async () => {
     try {
-      const token = await AsyncStorage.getItem("token");
-      const headers = { Authorization: `Bearer ${token}` };
-
-      const response = await axios.get(
-        `http://localhost:8080/symptoms/type/${selectedOption}`,
-        { headers }
-      );
-      setFetchedData(response.data);
-      console.log(response.data);
+      const data = await fetchSymptomDataByType(selectedOption);
+      setFetchedData(data);
+      console.log(data);
     } catch (error) {
-      console.error("Error fetching symptom data:", error);
+      // Error handling is already done in the API service function
     }
   };
 
@@ -106,7 +99,7 @@ export default Graph = ({ selectedOption }) => {
                 <Text>{item.date}</Text>
                 <Text>{item.value}</Text>
                 <Text>
-                  {item.topRef}-{item.bottomRef}
+                  {item.bottomRef}-{item.topRef}
                 </Text>
               </View>
             ))}

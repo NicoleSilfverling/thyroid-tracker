@@ -8,14 +8,13 @@ import {
   StyleSheet,
   FlatList,
 } from "react-native";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import SaveData from "../components/SaveData";
 import SymptomBtn from "../components/SymptomBtn";
 import SymptomsList from "../components/SymptomsList";
 import NavigationBar from "../components/NavigationBar";
+import { fetchSymptomDataByDate } from "../api/api";
 
 const symptomBtnData = [
   {
@@ -81,17 +80,11 @@ export default function SaveDataScreen({ navigation }) {
 
   const fetchSymptomData = async () => {
     try {
-      const token = await AsyncStorage.getItem("token");
-      const headers = { Authorization: `Bearer ${token}` };
-
-      const response = await axios.get(
-        `http://localhost:8080/symptoms/${formattedDate}`,
-        { headers }
-      );
-      setFetchedData(response.data);
-      console.log(response.data);
+      const data = await fetchSymptomDataByDate(formattedDate);
+      setFetchedData(data);
+      console.log(data);
     } catch (error) {
-      console.error("Error fetching symptom data:", error);
+      // Error handling is already done in the API service function
     }
   };
 
