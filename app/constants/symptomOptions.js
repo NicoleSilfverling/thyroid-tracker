@@ -17,7 +17,7 @@ export const symptomOptions = [
   },
   {
     group: 2,
-    type: "Health",
+    type: "Muscle strength",
   },
   {
     group: 2,

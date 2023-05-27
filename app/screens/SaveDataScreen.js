@@ -42,7 +42,6 @@ export default function SaveDataScreen({ navigation }) {
       const { id } = matchingSymptom;
       setShowSymptomActionModal(true);
       setSymptomId(id);
-      console.log("Has a matching type");
     } else {
       setActiveGroup(group);
       setpopUpForm(true);
@@ -58,7 +57,6 @@ export default function SaveDataScreen({ navigation }) {
     try {
       const data = await fetchSymptomDataByDate(formattedDate);
       setFetchedData(data);
-      console.log(data);
     } catch (error) {
       // Error handling is already done in the API service function
     }
@@ -94,7 +92,6 @@ export default function SaveDataScreen({ navigation }) {
             onChange={(event, date) => {
               if (date !== undefined) {
                 setSelectedDate(date);
-                console.log(selectedDate);
               }
             }}
           />
