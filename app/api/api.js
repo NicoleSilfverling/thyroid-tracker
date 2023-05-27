@@ -52,3 +52,13 @@ export const postSymptomData = async (data) => {
     throw error;
   }
 };
+
+export const deleteSymptomData = async (id) => {
+  try {
+    const response = await api.delete(`/symptom/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting symptom data:", error);
+    throw error;
+  }
+};

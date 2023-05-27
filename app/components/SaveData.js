@@ -23,14 +23,14 @@ const SubmitSchema = Yup.object().shape({
 });
 
 export default function SaveData({
-  title,
+  type,
   activeGroup,
   setpopUpForm,
   selectedDate,
   setNewData,
 }) {
   const date = selectedDate;
-  const type = title;
+  // const type = label;
   const [value, setValue] = useState();
   const [topRef, setTopRef] = useState();
   const [bottomRef, setBottomRef] = useState();
@@ -75,7 +75,7 @@ export default function SaveData({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>{type}</Text>
       {activeGroup === 1 ? (
         <View>
           <View style={styles.inputBox}>
@@ -89,7 +89,7 @@ export default function SaveData({
             {errors.value && <Text style={styles.error}>{errors.value}</Text>}
           </View>
           <View style={styles.inputBox}>
-            <Text style={styles.label}>top ref</Text>
+            <Text style={styles.type}>top ref</Text>
             <TextInput
               style={styles.input}
               onChangeText={setTopRef}
@@ -99,7 +99,7 @@ export default function SaveData({
             {errors.topRef && <Text style={styles.error}>{errors.topRef}</Text>}
           </View>
           <View style={styles.inputBox}>
-            <Text style={styles.label}>bottom ref</Text>
+            <Text style={styles.type}>bottom ref</Text>
             <TextInput
               style={styles.input}
               onChangeText={setBottomRef}

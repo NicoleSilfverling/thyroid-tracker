@@ -4,7 +4,7 @@ import Theme from "../assets/Theme";
 
 export default function SymptomBtn({
   value,
-  label,
+  type,
   onPress,
   group,
   fetchedData,
@@ -27,7 +27,7 @@ export default function SymptomBtn({
       break;
   }
 
-  const hasMatchingType = fetchedData.some((symptom) => symptom.type === label);
+  const hasMatchingType = fetchedData.some((symptom) => symptom.type === type);
 
   return (
     <TouchableOpacity
@@ -45,7 +45,7 @@ export default function SymptomBtn({
           hasMatchingType && { color: "white" },
         ]}
       >
-        {label}
+        {type}
       </Text>
     </TouchableOpacity>
   );

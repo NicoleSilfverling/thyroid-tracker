@@ -16,9 +16,11 @@ import SymptomsList from "../components/SymptomsList";
 import NavigationBar from "../components/NavigationBar";
 import { fetchSymptomDataByDate } from "../api/api";
 import { symptomOptions } from "../constants/symptomOptions";
+import SymptomActionModal from "../components/SymptomActionModal";
 
 export default function SaveDataScreen({ navigation }) {
   const [popUpForm, setpopUpForm] = useState(false);
+  const [showSymptomActionModal, setShowSymptomActionModal] = useState(false);
   const [activeBtn, setActiveBtn] = useState("");
   const [activeGroup, setActiveGroup] = useState("");
 
@@ -27,11 +29,24 @@ export default function SaveDataScreen({ navigation }) {
   const [newData, setNewData] = useState(false);
 
   const [fetchedData, setFetchedData] = useState([]);
+  const [symptomId, setSymptomId] = useState(null);
 
-  const handlePress = (value, group) => {
-    setActiveGroup(group);
-    setActiveBtn(value);
-    setpopUpForm(true);
+  const handlePress = (type, group) => {
+    setActiveBtn(type);
+
+    const matchingSymptom = fetchedData.find(
+      (symptom) => symptom.type === type
+    );
+
+    if (matchingSymptom) {
+      const { id } = matchingSymptom;
+      setShowSymptomActionModal(true);
+      setSymptomId(id);
+      console.log("Has a matching type");
+    } else {
+      setActiveGroup(group);
+      setpopUpForm(true);
+    }
   };
 
   useEffect(() => {
@@ -53,13 +68,22 @@ export default function SaveDataScreen({ navigation }) {
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <Modal visible={popUpForm} transparent={true}>
         <SaveData
-          title={activeBtn}
+          type={activeBtn}
           activeGroup={activeGroup}
           setpopUpForm={setpopUpForm}
           selectedDate={formattedDate}
           setNewData={setNewData}
         />
       </Modal>
+      <Modal visible={showSymptomActionModal} transparent={true}>
+        <SymptomActionModal
+          setShowSymptomActionModal={setShowSymptomActionModal}
+          symptomId={symptomId}
+          setNewData={setNewData}
+          activeBtn={activeBtn}
+        />
+      </Modal>
+
       <View style={styles.container}>
         <View style={styles.screenContent}>
           <DateTimePicker
@@ -76,7 +100,7 @@ export default function SaveDataScreen({ navigation }) {
           />
 
           <View style={styles.contentContainer}>
-            <Text>Bloodwork</Text>
+            <Text style={styles.groupTitle}>Bloodwork</Text>
             <View style={styles.content}>
               {symptomOptions.map((symptomOption, index) => {
                 if (symptomOption.group === 1) {
@@ -84,13 +108,11 @@ export default function SaveDataScreen({ navigation }) {
                     <SymptomBtn
                       key={index}
                       group={symptomOption.group}
-                      value={symptomOption.label}
-                      label={symptomOption.label}
+                      value={symptomOption.type}
+                      type={symptomOption.type}
                       selectedDate={formattedDate}
                       fetchedData={fetchedData}
-                      onPress={(value) =>
-                        handlePress(value, symptomOption.group)
-                      }
+                      onPress={(type) => handlePress(type, symptomOption.group)}
                     />
                   );
                 } else {
@@ -99,7 +121,7 @@ export default function SaveDataScreen({ navigation }) {
               })}
             </View>
 
-            <Text>Symptoms</Text>
+            <Text style={styles.groupTitle}>Symptoms</Text>
             <View style={styles.content}>
               {symptomOptions.map((symptomOption, index) => {
                 if (symptomOption.group === 2) {
@@ -107,8 +129,8 @@ export default function SaveDataScreen({ navigation }) {
                     <SymptomBtn
                       key={index}
                       group={symptomOption.group}
-                      value={symptomOption.label}
-                      label={symptomOption.label}
+                      value={symptomOption.type}
+                      type={symptomOption.type}
                       selectedDate={formattedDate}
                       fetchedData={fetchedData}
                       onPress={(value) =>
@@ -156,5 +178,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 10,
     flexWrap: "wrap",
+  },
+  groupTitle: {
+    fontWeight: "500",
   },
 });

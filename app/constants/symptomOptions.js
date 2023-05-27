@@ -1,26 +1,26 @@
 export const symptomOptions = [
   {
     group: 1,
-    label: "TSH",
+    type: "TSH",
   },
   {
     group: 1,
-    label: "T3",
+    type: "T3",
   },
   {
     group: 1,
-    label: "T4",
+    type: "T4",
   },
   {
     group: 2,
-    label: "Energy",
+    type: "Energy",
   },
   {
     group: 2,
-    label: "Health",
+    type: "Health",
   },
   {
     group: 2,
-    label: "Anxiety",
+    type: "Anxiety",
   },
 ];
