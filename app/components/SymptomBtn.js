@@ -47,11 +47,6 @@ export default function SymptomBtn({
       >
         {label}
       </Text>
-      {/* {hasMatchingType && colorGroup == 1 && (
-        <Text style={{ color: "#FFF", fontSize: 20 }}>
-          {fetchedData[0].value} pmol
-        </Text>
-      )} */}
     </TouchableOpacity>
   );
 }
@@ -60,8 +55,8 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     justifyContent: "center",
-    width: 100,
-    height: 100,
+    width: 95,
+    height: 95,
     borderWidth: 3,
     borderRadius: 100,
     marginBottom: 20,

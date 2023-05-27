@@ -139,12 +139,12 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   plus: {
-    fontSize: 30,
+    fontSize: 40,
     color: Theme.colors.primary,
   },
   plusBtn: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,

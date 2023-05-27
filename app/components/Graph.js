@@ -28,6 +28,7 @@ export default Graph = ({ selectedOption }) => {
     datasets: [
       {
         data: fetchedData.map((d) => d.value),
+        minBarLength: 0,
         // color: (opacity = 1) => {
         //   if (selectedPoint) {
         //     return `rgba(255, 0, 0, ${opacity})`; // red if selected
@@ -35,6 +36,10 @@ export default Graph = ({ selectedOption }) => {
         //   return Theme.colors.primary; // blue if not selected
         // },
         // strokeWidth: 2, // optional
+      },
+      {
+        data: [0], //lowest value
+        withDots: false,
       },
     ],
   };
@@ -44,8 +49,8 @@ export default Graph = ({ selectedOption }) => {
     backgroundGradientFrom: "#ffffff",
     backgroundGradientTo: "#ffffff",
     decimalPlaces: 0, // optional, defaults to 2dp
-    color: (opacity = 1) => Theme.colors.primary, // black
-    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // black
+    color: (opacity = 1) => Theme.colors.primary,
+    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
     style: {
       borderRadius: 16,
     },
@@ -68,9 +73,9 @@ export default Graph = ({ selectedOption }) => {
     <View style={styles.container}>
       {fetchedData.length > 0 ? (
         <>
-          <Text style={{ textAlign: "center", padding: 10 }}>
+          {/* <Text style={{ textAlign: "center", padding: 10 }}>
             {selectedPoint ? `Selected value: ${selectedPoint.value}` : ""}
-          </Text>
+          </Text> */}
           <LineChart
             data={chartData}
             width={screenWidth}
@@ -79,7 +84,7 @@ export default Graph = ({ selectedOption }) => {
             chartConfig={chartConfig}
           />
 
-          <ScrollView contentContainerStyle={styles.listContainer}>
+          <ScrollView style={styles.listContainer}>
             <View style={styles.item}>
               <Text>Date</Text>
               <Text>Value</Text>
@@ -115,7 +120,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
+    // backgroundColor: "blue",
   },
   item: {
     flexDirection: "row",
@@ -128,6 +133,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingHorizontal: 16,
-    width: "100%",
+    width: "90%",
+    // backgroundColor: "pink",
   },
 });
