@@ -89,7 +89,7 @@ export default function SaveData({
             {errors.value && <Text style={styles.error}>{errors.value}</Text>}
           </View>
           <View style={styles.inputBox}>
-            <Text style={styles.type}>top ref</Text>
+            <Text style={styles.label}>top ref</Text>
             <TextInput
               style={styles.input}
               onChangeText={setTopRef}
@@ -99,7 +99,7 @@ export default function SaveData({
             {errors.topRef && <Text style={styles.error}>{errors.topRef}</Text>}
           </View>
           <View style={styles.inputBox}>
-            <Text style={styles.type}>bottom ref</Text>
+            <Text style={styles.label}>bottom ref</Text>
             <TextInput
               style={styles.input}
               onChangeText={setBottomRef}
