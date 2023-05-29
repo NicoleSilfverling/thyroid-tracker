@@ -41,8 +41,6 @@ export default function CalendarScreen({ navigation }) {
         theme={theme}
         style={styles.calendar}
       />
-
-      {/* <Button title="Go back to Home" onPress={() => navigation.goBack()} /> */}
     </View>
   );
 }
@@ -51,7 +49,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    // backgroundColor: "red",
   },
   calendar: {
     width: 400,

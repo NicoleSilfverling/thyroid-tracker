@@ -63,23 +63,34 @@ export default function HomeScreen({ navigation, setIsLoggedIn }) {
                 <Text style={styles.addTxt}>+</Text>
               </View>
             </TouchableOpacity>
-            <View style={styles.card}></View>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => navigation.navigate("Graph")}
+            >
+              <Text style={styles.title}>Symptom Trends</Text>
+              <Image
+                style={styles.graphImg}
+                source={require("../images/graph.png")}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
           </View>
           <View style={styles.box}>
             <TouchableOpacity
               style={styles.card}
               onPress={() => navigation.navigate("Meds")}
             >
-              {/* <View> */}
               <Text style={styles.title}>Medicin</Text>
               <Image
                 style={styles.pills}
                 source={require("../images/pills.jpg")}
+                resizeMode="contain"
               />
             </TouchableOpacity>
 
-            {/* <View style={styles.card}></View> */}
-            <View style={styles.card}></View>
+            <View style={styles.card}>
+              <Text style={styles.description}>More coming soon..</Text>
+            </View>
           </View>
         </View>
         <NavigationBar navigation={navigation} />
@@ -141,6 +152,7 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     borderWidth: 1,
     borderColor: "#ccc",
+    overflow: "hidden",
   },
   add: {
     borderWidth: 2,
@@ -161,11 +173,19 @@ const styles = StyleSheet.create({
     color: Theme.colors.primary,
   },
   title: {
-    fontSize: 25,
+    fontSize: 20,
+    color: Theme.colors.primary,
+  },
+  description: {
+    fontSize: 16,
     color: Theme.colors.primary,
   },
   pills: {
-    width: "90%",
-    height: "90%",
+    width: "70%",
+    height: "70%",
+  },
+  graphImg: {
+    width: "100%",
+    height: "100%",
   },
 });

@@ -48,11 +48,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
   },
-  //   button: {
-  //     marginVertical: 10,
-  //     padding: 10,
-  //     backgroundColor: "#ccc",
-  //   },
   title: {
     fontSize: 25,
     fontWeight: "600",

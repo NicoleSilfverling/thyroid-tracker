@@ -1,10 +1,6 @@
 const Theme = {
   colors: {
     primary: "#009688",
-    // primary: "#009688",
-    // background: "#F2F2F2",
-    // text: "#444444",
-    // inputBorder: "#CCCCCC",
     blue: "#007bff",
     red: "#fb5b5a",
   },
