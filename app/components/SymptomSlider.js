@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Slider from "@react-native-community/slider";
+import Theme from "../assets/Theme";
 
 export default SymptomSlider = ({
   value,
@@ -8,15 +9,9 @@ export default SymptomSlider = ({
   bottomRef,
   onValueChange,
 }) => {
-  //const [value, setValue] = useState(3); //start in middle of 1-5
-
-  // jag vill använda set value från save data för att uppdatera formuläret, just nu är det ingen siffra så lägga värdet 3 innnan sidan öppnas??
   const handleValueChange = (val) => {
     onValueChange(val);
   };
-  //   const handleValueChange = (val) => {
-  //     setValue(val);
-  //   };
 
   return (
     <View style={styles.container}>
@@ -27,6 +22,7 @@ export default SymptomSlider = ({
         step={1}
         value={value}
         onValueChange={handleValueChange}
+        minimumTrackTintColor={Theme.colors.primary}
       />
       <View style={styles.textContainer}>
         <Text style={[styles.text, { textAlign: "left" }]}>Low</Text>

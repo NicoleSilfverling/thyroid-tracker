@@ -76,13 +76,15 @@ export default Graph = ({ selectedOption }) => {
           {/* <Text style={{ textAlign: "center", padding: 10 }}>
             {selectedPoint ? `Selected value: ${selectedPoint.value}` : ""}
           </Text> */}
-          <LineChart
-            data={chartData}
-            width={screenWidth}
-            height={220}
-            onDataPointClick={handleDataPointClick}
-            chartConfig={chartConfig}
-          />
+          <View style={styles.chartContainer}>
+            <LineChart
+              data={chartData}
+              width={screenWidth}
+              height={220}
+              onDataPointClick={handleDataPointClick}
+              chartConfig={chartConfig}
+            />
+          </View>
 
           <ScrollView style={styles.listContainer}>
             <View style={styles.item}>
@@ -130,6 +132,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
     width: "100%",
+  },
+  chartContainer: {
+    marginTop: 50,
+    marginBottom: 40,
   },
   listContainer: {
     paddingHorizontal: 16,

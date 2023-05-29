@@ -7,6 +7,7 @@ import {
   Modal,
   StyleSheet,
   FlatList,
+  ScrollView,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
@@ -81,71 +82,74 @@ export default function SaveDataScreen({ navigation }) {
           activeBtn={activeBtn}
         />
       </Modal>
-
       <View style={styles.container}>
-        <View style={styles.screenContent}>
-          <DateTimePicker
-            value={selectedDate}
-            mode="date"
-            display="default"
-            maximumDate={new Date()}
-            onChange={(event, date) => {
-              if (date !== undefined) {
-                setSelectedDate(date);
-              }
-            }}
-          />
-
-          <View style={styles.contentContainer}>
-            <Text style={styles.groupTitle}>Bloodwork</Text>
-            <View style={styles.content}>
-              {symptomOptions.map((symptomOption, index) => {
-                if (symptomOption.group === 1) {
-                  return (
-                    <SymptomBtn
-                      key={index}
-                      group={symptomOption.group}
-                      value={symptomOption.type}
-                      type={symptomOption.type}
-                      selectedDate={formattedDate}
-                      fetchedData={fetchedData}
-                      onPress={(type) => handlePress(type, symptomOption.group)}
-                    />
-                  );
-                } else {
-                  return null;
+        <ScrollView style={styles.scrollContainer}>
+          <View style={styles.screenContent}>
+            <DateTimePicker
+              value={selectedDate}
+              mode="date"
+              display="default"
+              maximumDate={new Date()}
+              onChange={(event, date) => {
+                if (date !== undefined) {
+                  setSelectedDate(date);
                 }
-              })}
-            </View>
+              }}
+            />
 
-            <Text style={styles.groupTitle}>Symptoms</Text>
-            <View style={styles.content}>
-              {symptomOptions.map((symptomOption, index) => {
-                if (symptomOption.group === 2) {
-                  return (
-                    <SymptomBtn
-                      key={index}
-                      group={symptomOption.group}
-                      value={symptomOption.type}
-                      type={symptomOption.type}
-                      selectedDate={formattedDate}
-                      fetchedData={fetchedData}
-                      onPress={(value) =>
-                        handlePress(value, symptomOption.group)
-                      }
-                    />
-                  );
-                } else {
-                  return null;
-                }
-              })}
+            <View style={styles.contentContainer}>
+              <Text style={styles.groupTitle}>Bloodwork</Text>
+              <View style={styles.content}>
+                {symptomOptions.map((symptomOption, index) => {
+                  if (symptomOption.group === 1) {
+                    return (
+                      <SymptomBtn
+                        key={index}
+                        group={symptomOption.group}
+                        value={symptomOption.type}
+                        type={symptomOption.type}
+                        selectedDate={formattedDate}
+                        fetchedData={fetchedData}
+                        onPress={(type) =>
+                          handlePress(type, symptomOption.group)
+                        }
+                      />
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
+              </View>
+
+              <Text style={styles.groupTitle}>Symptoms</Text>
+              <View style={styles.content}>
+                {symptomOptions.map((symptomOption, index) => {
+                  if (symptomOption.group === 2) {
+                    return (
+                      <SymptomBtn
+                        key={index}
+                        group={symptomOption.group}
+                        value={symptomOption.type}
+                        type={symptomOption.type}
+                        selectedDate={formattedDate}
+                        fetchedData={fetchedData}
+                        onPress={(value) =>
+                          handlePress(value, symptomOption.group)
+                        }
+                      />
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
+              </View>
             </View>
+            <SymptomsList
+              fetchedData={fetchedData}
+              selectedDate={formattedDate}
+            />
           </View>
-          <SymptomsList
-            fetchedData={fetchedData}
-            selectedDate={formattedDate}
-          />
-        </View>
+        </ScrollView>
         <NavigationBar navigation={navigation} />
       </View>
     </SafeAreaView>
@@ -160,10 +164,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  scrollContainer: {
+    // flex: 1,
+    // padding: 20,
+    width: "100%",
+    height: "100%",
+    // backgroundColor: "#fff",
+    marginBottom: 40,
+  },
   screenContent: {
     width: "90%",
     height: "100%",
+    alignSelf: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
   contentContainer: {
     width: "100%",

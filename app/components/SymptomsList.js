@@ -18,11 +18,9 @@ function SymptomsList({ fetchedData, selectedDate }) {
           <Text style={styles.label}>Ref</Text>
         </View> */}
           </View>
-          <FlatList
-            data={fetchedData}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.item}>
+          <View style={styles.itemContainer}>
+            {fetchedData.map((item) => (
+              <View style={styles.item} key={item.id.toString()}>
                 <View style={styles.textContainer}>
                   <Text style={styles.text}>{item.type}</Text>
                 </View>
@@ -30,13 +28,11 @@ function SymptomsList({ fetchedData, selectedDate }) {
                   <Text style={styles.text}>{item.value}</Text>
                 </View>
                 {/* <View style={styles.textContainer}>
-                <Text style={styles.text}>
-                  {item.bottomRef}-{item.topRef}
-                </Text>
-              </View> */}
+        <Text style={styles.text}>{item.bottomRef}-{item.topRef}</Text>
+      </View> */}
               </View>
-            )}
-          />
+            ))}
+          </View>
         </View>
       ) : (
         <Text style={styles.text}>No symptoms found.</Text>
@@ -71,7 +67,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "500",
     marginBottom: 10,
   },
