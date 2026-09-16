@@ -1,6 +1,11 @@
 # MyThyroid
 <img width="200" alt="Logo" src="https://github.com/user-attachments/assets/8c62c69c-74cb-4f36-ab55-ded52ee333d8" />
 
+## Backend
+
+The backend for this project is available here:
+
+[View the Backend Repository](https://github.com/NicoleSilfverling/thyroid-backend)
 
 ## Overview
 MyThyroid is a mobile application designed to assist individuals with thyroid disorders by providing a platform to log and manage their blood values and symptoms. The app aims to improve users health insights and quality of life by allowing them to easily track key health data and prepare for medical appointments.
